@@ -19,6 +19,7 @@ const App = () => {
 
     <Route path='/user' element={<StuLayout/>}>
 
+    <Route path='/user/' element={<Navigate to={Signin}/>}  />
     <Route path='/user/signin' element={<Signin/>}  />
     <Route path='/user/signup' element={<Signup/>}/>
     
