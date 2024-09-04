@@ -11,6 +11,7 @@ const AdLayout = () => {
             setLoading(false)
         }, 2000);
     }, [])
+    
   return (
     <>
         {Loading ? (
