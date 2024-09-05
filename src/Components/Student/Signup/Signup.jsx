@@ -1,36 +1,54 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-
+import axios from 'axios'
 
 
 const Signup = () => {
-  let studentArray = []
-  const Navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPass] = useState('')
-
+  const [confirmPassword, setConfirmPassword] = useState('');
   
+  let url = "http://localhost:3900/user/signup"
+  let studentArray = []
+  const Navigate = useNavigate()
 
+  const handleSignup = (e) =>{
+    e.preventDefault()
+    let user = {email, password, confirmPassword}
+    console.log(user)
+    axios.post(url, user)
+    .then((result) => {
+      console.log(result);
+    })
+    
+    setEmail('')
+    setPass('')
+    setConfirmPassword('');
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    } else {
+      
+      studentArray.push(user)
+      localStorage.setItem("userInfo", JSON.stringify(studentArray))
+      Navigate("/user/signin");
+  
+      alert("Signup successful! You can now sign in.");
+    }
+
+  }
   const handleMail = (e) =>{
     setEmail(e.target.value)    
+    console.log(email)
   }
   const handlePass = (e) =>{
     setPass(e.target.value)
   }
-
-  const handleSignup = (e) =>{
-
-    let studentArray = JSON.parse(localStorage.getItem("userInfo")) || [];
-
-    e.preventDefault()
-    let user = {email, password}
-    studentArray.push(user)
-    localStorage.setItem("userInfo", JSON.stringify(studentArray))
-    console.log(user)
-    Navigate("/user/signin");
-
-    alert("Signup successful! You can now sign in.");
+  const handleConfirmPass = (e) => {
+    setConfirmPassword(e.target.value);
   }
+  
 
 
   return (
@@ -42,6 +60,7 @@ const Signup = () => {
           <div className="form-floating">
             <input
               type="email"
+              name='email'
               className="form-control" required
               id="floatingInput"
               placeholder="name@example.com"
@@ -54,6 +73,7 @@ const Signup = () => {
           <div className="form-floating">
             <input
               type="password"
+              name='password'
               className="form-control" required
               id="floatingInput"
               value={password}
@@ -68,6 +88,8 @@ const Signup = () => {
               className="form-control" required
               id="floatingPassword"
               placeholder="Password"
+              value={confirmPassword}
+              onChange={handleConfirmPass}
             />
             <label for="floatingPassword">Confirm Password</label>
           </div>

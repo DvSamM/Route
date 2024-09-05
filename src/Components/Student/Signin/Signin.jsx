@@ -12,7 +12,7 @@ const Signin = () => {
   
   let newemail = JSON.parse(localStorage.getItem("userInfo")) || [];
 
-  
+
   
   const validUser = newemail.find(newemail => newemail.email === email && newemail.password === password);
   
